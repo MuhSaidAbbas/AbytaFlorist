@@ -42,5 +42,5 @@ Route::prefix('/admin')->group(function () {
 });
 
 Route::fallback(function () {
-return"Halaman yang Anda tuju tidak ada";
+    return view('errorpage');
 });

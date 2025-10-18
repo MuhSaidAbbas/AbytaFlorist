@@ -1,34 +1,13 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/home', function () {
-    return view ('home');
-});
-
-Route::get('/about', function () {
-    return view ('about');
-});
-
-Route::get('/program', function () {
-    return view ('program');
-});
-
-Route::get('/our_team', function () {
-    return view ('our_team');
-});
+Route::get('/', fn() => redirect()->route('home'));
+Route::get('/home', fn() => view('home'))->name('home');
+Route::get('/about', fn() => view('about'))->name('about');
+Route::get('/catalogue', fn() => view('catalogue'))->name('catalogue');
+Route::get('/order', fn() => view('order'))->name('order');
+Route::get('/hubungi-kami', fn() => view('contact'))->name('contact');
+Route::fallback(fn() => view('errorpage'));
 
 
-Route::get('/welcome', function () {
-    return view ('welcome');
-});
-
-Route::get('/hubungi-kami', function () {
-return'<h1>Hubungi Kami</h1>';
-});
-Route::redirect('/contact-us', '/hubungi-kami');
-
-Route::fallback(function () {
-    return view('errorpage');
-});
+Route::fallback(fn() => view('errorpage'));

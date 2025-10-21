@@ -55,6 +55,21 @@
             <a class="text-sm font-medium hover:text-primary" href="{{ route('catalogue') }}">Katalog</a>
             <a class="text-sm font-medium hover:text-primary" href="{{ route('order') }}">Pesan</a>
             <a class="text-sm font-medium hover:text-primary" href="{{ route('contact') }}">Kontak</a>
+            <!-- Checkout Cart Button -->
+            <div class="relative">
+                <button id="cartButton" class="relative flex items-center text-gray-700 hover:text-pink-600 transition">
+                    <!-- Icon Cart -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 3h1.386c.51 0 .955.343 1.09.836l.383 1.379m0 0L6.75 14.25h10.5l1.64-8.235a1.125 1.125 0 00-1.105-1.365H4.125m.984 2.25H18" />
+                    </svg>
+
+                    <!-- Badge (jumlah item) -->
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-pink-600 text-white text-xs font-semibold rounded-full px-1.5 py-0.5">
+                        3
+                    </span>
+                </button>
+            </div>
         </nav>
 
         {{-- Mobile button --}}
@@ -80,6 +95,66 @@
     <main class="py-10 px-4">
         @yield('content')
     </main>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6 relative">
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                ✕
+            </button>
+
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Checkout Keranjang</h2>
+
+            <!-- Daftar Item -->
+            <div class="divide-y divide-gray-200 mb-4">
+                <div class="flex justify-between py-2">
+                    <span>Buket Mawar Merah</span>
+                    <span class="font-semibold text-pink-600">Rp150.000</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span>Buket Lily Putih</span>
+                    <span class="font-semibold text-pink-600">Rp180.000</span>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="flex justify-between text-lg font-semibold mb-4">
+                <span>Total</span>
+                <span class="text-pink-600">Rp330.000</span>
+            </div>
+
+            <!-- Tombol Konfirmasi -->
+            <button class="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition">
+                Konfirmasi Pembayaran
+            </button>
+        </div>
+    </div>
+
+    <!-- Script Modal -->
+    <script>
+        const cartButton = document.getElementById('cartButton');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const closeModal = document.getElementById('closeModal');
+
+        cartButton.addEventListener('click', () => {
+            checkoutModal.classList.remove('hidden');
+            checkoutModal.classList.add('flex');
+        });
+
+        closeModal.addEventListener('click', () => {
+            checkoutModal.classList.add('hidden');
+            checkoutModal.classList.remove('flex');
+        });
+
+        // Optional: close when click outside
+        checkoutModal.addEventListener('click', (e) => {
+            if (e.target === checkoutModal) {
+                checkoutModal.classList.add('hidden');
+                checkoutModal.classList.remove('flex');
+            }
+        });
+    </script>
+
 
     {{-- ✅ Footer --}}
     <footer class="border-t border-soft-pink/50 dark:border-primary/30 px-4 md:px-10 py-6 text-center">

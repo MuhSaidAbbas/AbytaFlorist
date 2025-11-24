@@ -65,8 +65,15 @@
                     </svg>
 
                     <!-- Badge (jumlah item) -->
-                    <span id="cartCount" class="absolute -top-2 -right-2 bg-pink-600 text-white text-xs font-semibold rounded-full px-1.5 py-0.5">
-                        3
+                    @php
+                        $sessionKey = session('cart_session_key');
+                        $cart = $sessionKey 
+                            ? \App\Models\Cart::where('session_key', $sessionKey)->with('items')->first()
+                            : null;
+                    @endphp
+
+                    <span class="absolute -top-2 -right-3 bg-pink-600 text-white text-xs rounded-full px-1">
+                        {{ $cart ? $cart->items->count() : 0 }}
                     </span>
                 </button>
             </div>
@@ -100,7 +107,6 @@
     <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6 relative">
             <button id="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-                ✕
             </button>
 
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Checkout Keranjang</h2>

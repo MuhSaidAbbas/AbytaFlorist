@@ -12,7 +12,6 @@ Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/home', fn() => view('home'))->name('home');
 Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/catalogue', [ProductController::class, 'catalogue'])->name('catalogue');
-Route::get('/order', fn() => view('order'))->name('order');
 Route::get('/hubungi-kami', fn() => view('contact'))->name('contact');
 
 // CRUD Produk
@@ -27,5 +26,8 @@ Route::delete('/cart/item/{item}', [CartController::class,'remove'])->name('cart
 Route::get('/checkout', [CheckoutController::class,'show'])->name('checkout.show');
 Route::post('/checkout', [CheckoutController::class,'process'])->name('checkout.process');
 
-// Fallback (paling terakhir)
+// Halaman Order
+Route::get('/order', fn() => view('order'))->name('order');
+
+// Fallback
 Route::fallback(fn() => view('errorpage'));

@@ -21,42 +21,57 @@
 <main class="flex-1 px-4 py-10 md:px-10 lg:px-20 flex justify-center">
   <div class="w-full max-w-2xl">
     <div class="text-center mb-10">
-      <p class="text-4xl font-black leading-tight tracking-[-0.033em] text-text-light dark:text-text-dark">Lakukan Pemesanan Anda</p>
+      <p class="text-4xl font-black leading-tight tracking-[-0.033em] text-text-light dark:text-text-dark">
+        Lakukan Pemesanan Anda
+      </p>
     </div>
 
     <div class="bg-background-light dark:bg-background-dark/50 p-6 sm:p-8 rounded-xl shadow-lg border border-border-light dark:border-border-dark">
-      <form class="space-y-6" method="POST" action="#">
-        {{-- untuk tugas: action = # (dummy). Jika mau tambah backend, ganti route --}}
+
+      {{-- FORM PEMESANAN --}}
+      <form class="space-y-6" method="POST" action="{{ route('checkout.process') }}">
+        @csrf
+
         <label class="flex flex-col">
           <p class="text-base font-medium leading-normal pb-2">Nama Lengkap</p>
-          <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary dark:focus:border-secondary h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark p-[15px] text-base font-normal leading-normal" placeholder="Masukkan nama lengkap Anda" required value=""/>
+          <input 
+            name="name"
+            class="form-input flex w-full rounded-lg border border-border-light dark:border-border-dark p-[15px]"
+            placeholder="Masukkan nama lengkap Anda"
+            required
+          />
         </label>
 
         <label class="flex flex-col">
           <p class="text-base font-medium leading-normal pb-2">Nomor Telepon</p>
-          <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary dark:focus:border-secondary h-14 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark p-[15px] text-base font-normal leading-normal" placeholder="Masukkan nomor telepon Anda" required value=""/>
+          <input 
+            name="phone"
+            class="form-input flex w-full rounded-lg border border-border-light dark:border-border-dark p-[15px]"
+            placeholder="Masukkan nomor telepon Anda"
+            required
+          />
         </label>
 
         <label class="flex flex-col">
-          <p class="text-base font-medium leading-normal pb-2">Pilih Produk</p>
-          <select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary dark:focus:border-secondary h-14 p-[15px] text-base font-normal leading-normal appearance-none" required>
-            <option disabled selected value="">Pilih rangkaian bunga</option>
-            <option value="graduation-bouquet">Buket Wisuda</option>
-            <option value="social-booth-arrangement">Rangkaian Booth Sosial</option>
-            <option value="custom-bouquet">Buket Kustom</option>
-            <option value="seasonal-special">Spesial Musiman</option>
-          </select>
+          <p class="text-base font-medium leading-normal pb-2">Alamat Pengiriman</p>
+          <textarea 
+            name="address"
+            class="form-textarea flex w-full rounded-lg border border-border-light dark:border-border-dark p-[15px] min-h-32"
+            placeholder="Masukkan alamat lengkap"
+            required
+          ></textarea>
         </label>
 
-        <label class="flex flex-col">
-          <p class="text-base font-medium leading-normal pb-2">Pesan untuk Kartu</p>
-          <textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus:border-primary dark:focus:border-secondary min-h-32 placeholder:text-placeholder-light dark:placeholder:text-placeholder-dark p-[15px] text-base font-normal leading-normal" placeholder="contoh, Selamat atas kelulusanmu!"></textarea>
-        </label>
-
-        <button class="w-full bg-primary text-white font-bold py-4 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 dark:focus:ring-offset-background-dark transition-colors duration-300" type="submit">
+        <button 
+          class="w-full bg-primary text-white font-bold py-4 px-4 rounded-lg hover:bg-primary/90 transition"
+          type="submit"
+        >
           Kirim Pesanan
         </button>
+
       </form>
+      {{-- END FORM --}}
+
     </div>
   </div>
 </main>

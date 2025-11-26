@@ -37,6 +37,15 @@
         </div>
 
         <div>
+            <label class="block font-medium">Kategori</label>
+            <select name="category" class="w-full border rounded p-2" required>
+                <option value="Buket">Buket</option>
+                <option value="Kotak Bunga">Kotak Bunga</option>
+                <option value="Bingkai Kenangan">Bingkai Kenangan</option>
+            </select>
+        </div>
+
+        <div>
             <label class="block font-medium">Gambar Produk</label>
             <input type="file" name="image" class="w-full border rounded p-2" required>
         </div>

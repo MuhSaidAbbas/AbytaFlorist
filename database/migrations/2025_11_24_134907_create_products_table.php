@@ -10,6 +10,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->string('category')->default('Buket');
             $table->string('image')->nullable(); // path di storage/app/public/products/...
             $table->unsignedBigInteger('price'); // in cents or smallest currency unit
             $table->integer('stock')->default(999);

@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model {
-    protected $fillable = ['name','description','image','price','stock'];
+    protected $fillable = ['name','description','image','price','stock','category'];
 
     public function cartItems() {
         return $this->hasMany(CartItem::class);

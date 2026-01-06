@@ -1,32 +1,25 @@
-@extends('layouts.master')
+@extends('layouts.admin')
+
+@section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white dark:bg-background-dark p-6 mt-10 shadow-md rounded-xl">
+<h1 class="text-2xl font-bold mb-6">Dashboard Admin</h1>
 
-    <h1 class="text-2xl font-bold mb-4 text-center">Admin Panel – Abyta Florist</h1>
-    <p class="text-center text-gray-600 dark:text-gray-300 mb-6">
-        Halaman rahasia untuk mengelola produk
-    </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-    <div class="space-y-4">
+    <div class="bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Total Produk</p>
+        <p class="text-3xl font-bold">{{ \App\Models\Product::count() }}</p>
+    </div>
 
-        {{-- Kelola Produk --}}
-        <a href="{{ route('products.index') }}"
-           class="block bg-primary text-white px-4 py-3 rounded-lg text-center font-semibold hover:bg-primary/80 transition">
-            ⚙️ Kelola Produk (CRUD)
-        </a>
+    <div class="bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Total Pesanan</p>
+        <p class="text-3xl font-bold">{{ \App\Models\Order::count() }}</p>
+    </div>
 
-        {{-- Tambah Produk --}}
-        <a href="{{ route('products.create') }}"
-           class="block bg-green-600 text-white px-4 py-3 rounded-lg text-center font-semibold hover:bg-green-700 transition">
-            ➕ Tambah Produk Baru
-        </a>
-
-        {{-- Lihat Website --}}
-        <a href="{{ route('home') }}"
-           class="block bg-gray-200 dark:bg-gray-700 dark:text-white px-4 py-3 rounded-lg text-center font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-            🌸 Kembali ke Website
-        </a>
+    <div class="bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Status Sistem</p>
+        <p class="text-green-600 font-semibold">Online</p>
     </div>
 
 </div>

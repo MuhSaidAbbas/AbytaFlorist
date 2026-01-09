@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -75,7 +76,7 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
-        // 🔍 Search produk
+        // Search produk
         if ($request->search) {
         $query->where('name', 'like', '%' . $request->search . '%');
         }
@@ -86,7 +87,7 @@ class ProductController extends Controller
         }
 
 
-    // 💰 Filter harga (sesuai pilihan dropdown)
+    // Filter harga (sesuai pilihan dropdown)
         if ($request->price == '0-500') {
         $query->whereBetween('price', [0, 500000]);
         }
@@ -107,7 +108,15 @@ class ProductController extends Controller
 
     $products = $query->get();
 
-    return view('catalogue', compact('products'));
+    $cart = null;
+    if (session()->has('cart_session_key')) {
+        $cart = \App\Models\Cart::where('session_key', session('cart_session_key'))
+        ->with('items.product')
+        ->first();
+    }
+
+    return view('catalogue', compact('products', 'cart'));
+
 }
 
 
@@ -134,7 +143,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-    // 👉 Kembali ke halaman admin katalog
+    // Kembali ke halaman admin katalog
     return redirect()->route('products.index')
                      ->with('success', 'Produk berhasil diperbarui!');
 }

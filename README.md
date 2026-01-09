@@ -1,61 +1,71 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Abyta Florist 🌸
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Abyta Florist adalah website berbasis **Laravel** yang digunakan untuk **jual beli produk buket bunga**. Website ini dikembangkan untuk membantu salah satu mahasiswi dalam memasarkan dan mengelola penjualan rangkaian bunga secara online.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Deskripsi Aplikasi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi Abyta Florist menyediakan fitur:
+- Katalog produk buket bunga
+- Keranjang belanja
+- Proses pemesanan (checkout)
+- Manajemen produk (CRUD)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Website ini dibangun menggunakan konsep **Model-View-Controller (MVC)** pada Laravel dan dikembangkan sesuai tahapan **Rekayasa Perangkat Lunak (RPL)**.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Teknologi yang Digunakan
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Laravel (Framework PHP)
+- Composer
+- MySQL (Database)
+- phpMyAdmin (Database Management)
+- Blade Template Engine
+- Git & GitHub
+- GitHub Actions (CI/CD)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Fitur Utama
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Manajemen Produk (CRUD)
+Aplikasi menyediakan fitur **Create, Read, Update, Delete (CRUD)** untuk data produk buket bunga. Pengelolaan data dilakukan menggunakan **Eloquent Model** dan **Controller Laravel**.
 
-### Premium Partners
+### Keranjang & Checkout
+Pengguna dapat menambahkan produk ke keranjang, melihat isi keranjang, serta melakukan pemesanan. Data keranjang dikelola menggunakan **session Laravel**.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Database & Migration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Aplikasi menggunakan **database MySQL** yang dikelola melalui **phpMyAdmin**.  
+Struktur database dibuat dan dikelola menggunakan **Laravel Migration**, sehingga memudahkan pengembangan dan menjaga konsistensi data.
 
-## Code of Conduct
+Beberapa tabel utama:
+- products
+- carts
+- cart_items
+- orders
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Proses Pengembangan & CI/CD
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Project ini menerapkan **Continuous Integration (CI)** menggunakan **GitHub Actions**.
 
-## License
+Alur pengembangan:
+1. Pengembangan dilakukan di branch `testing`
+2. Setiap push ke branch `testing` menjalankan workflow CI
+3. Jika CI berhasil, perubahan siap di-merge ke branch `main`
+4. Jika terjadi error, perbaikan dilakukan di branch `testing`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Pendekatan ini membantu menjaga kestabilan aplikasi dan kualitas kode.
+
+---
+
+## Branch Repository
+
+- `main` → Versi stabil
+- `testing` → Pengujian dan integrasi fitur

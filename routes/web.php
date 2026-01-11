@@ -21,23 +21,34 @@ Route::get('/hubungi-kami', fn() => view('contact'))->name('contact');
 Route::resource('products', ProductController::class);
 
 // Cart
-Route::post('/cart/add', [CartController::class,'add'])->name('cart.add');
-Route::post('/cart/add/{product}', [ProductController::class, 'addToCart'])
+Route::post('/cart/add/{product}', [CartController::class,'add'])
     ->name('cart.add');
 Route::get('/cart', [CartController::class,'view'])->name('cart.view');
 Route::delete('/cart/item/{item}', [CartController::class,'remove'])->name('cart.item.remove');
 
-// Checkout
-Route::get('/checkout', [CheckoutController::class,'show'])->name('checkout.show');
-Route::post('/checkout', [CheckoutController::class,'process'])->name('checkout.process');
+// Update quantity
+Route::patch('/cart/item/{item}', [CartController::class,'update'])
+    ->name('cart.item.update');
 
-// Halaman Order
-Route::get('/order', fn() => view('order'))->name('order');
+// Clear cart
+Route::delete('/cart/clear', [CartController::class,'clear'])
+    ->name('cart.clear');
+
+// Checkout
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
 // Fallback
 Route::fallback(fn() => view('errorpage'));
 
 // Admin Panel (jalur rahasia)
+Route::get('/abyta-admin', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
+Route::get('/abyta-admin/orders', [CheckoutController::class, 'adminOrders'])
+    ->name('admin.orders');
+
 Route::get('/abyta-admin', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');

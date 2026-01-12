@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Middleware\AdminMiddleware;
 
 // Homepage
 Route::get('/', fn() => view('home'))->name('home');
@@ -52,4 +53,8 @@ Route::get('/abyta-admin/orders', [CheckoutController::class, 'adminOrders'])
 Route::get('/abyta-admin', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
+
+//middleware
+Route::resource('products', ProductController::class)
+    ->middleware(AdminMiddleware::class);
 

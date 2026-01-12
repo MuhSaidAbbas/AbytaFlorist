@@ -39,13 +39,23 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
+    /**
+     * Form tambah produk (ADMIN ONLY)
+     */
     public function create()
     {
+        $this->authorize('manage', Product::class);
+
         return view('products.create');
     }
 
+    /**
+     * Simpan produk baru (ADMIN ONLY)
+     */
     public function store(Request $request)
     {
+        $this->authorize('manage', Product::class);
+
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'price'       => 'required|numeric|min:1000',
@@ -65,12 +75,12 @@ class ProductController extends Controller
             'image'       => $imageName,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()->route('products.index')
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
      * Halaman katalog utama pengunjung (/catalogue)
-     * Sudah support search + category + price filtering.
      */
     public function catalogue(Request $request)
     {
@@ -78,55 +88,59 @@ class ProductController extends Controller
 
         // Search produk
         if ($request->search) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-    // 🏷 Filter kategori
+        // Filter kategori
         if ($request->category) {
-        $query->whereRaw('LOWER(category) = ?', [ strtolower($request->category) ]);
+            $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
         }
 
-
-    // Filter harga (sesuai pilihan dropdown)
+        // Filter harga
         if ($request->price == '0-500') {
-        $query->whereBetween('price', [0, 500000]);
-        }
-        elseif ($request->price == '500-1jt') {
-        $query->whereBetween('price', [500000, 1000000]);
-        }
-        elseif ($request->price == '1jt+') {
-        $query->where('price', '>=', 1000000);
+            $query->whereBetween('price', [0, 500000]);
+        } elseif ($request->price == '500-1jt') {
+            $query->whereBetween('price', [500000, 1000000]);
+        } elseif ($request->price == '1jt+') {
+            $query->where('price', '>=', 1000000);
         }
 
-    // Urutkan harga jika user pilih 'low' atau 'high'
-    if ($request->price == 'low') {
-        $query->orderBy('price', 'asc');
+        // Urutkan harga
+        if ($request->price == 'low') {
+            $query->orderBy('price', 'asc');
+        } elseif ($request->price == 'high') {
+            $query->orderBy('price', 'desc');
+        }
+
+        $products = $query->get();
+
+        $cart = null;
+        if (session()->has('cart_session_key')) {
+            $cart = Cart::where('session_key', session('cart_session_key'))
+                ->with('items.product')
+                ->first();
+        }
+
+        return view('catalogue', compact('products', 'cart'));
     }
-    elseif ($request->price == 'high') {
-        $query->orderBy('price', 'desc');
-    }
 
-    $products = $query->get();
-
-    $cart = null;
-    if (session()->has('cart_session_key')) {
-        $cart = \App\Models\Cart::where('session_key', session('cart_session_key'))
-        ->with('items.product')
-        ->first();
-    }
-
-    return view('catalogue', compact('products', 'cart'));
-
-}
-
-
+    /**
+     * Form edit produk (ADMIN ONLY)
+     */
     public function edit(Product $product)
     {
+        $this->authorize('manage', Product::class);
+
         return view('products.edit', compact('product'));
     }
 
+    /**
+     * Update produk (ADMIN ONLY)
+     */
     public function update(Request $request, Product $product)
     {
+        $this->authorize('manage', Product::class);
+
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -137,21 +151,28 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($product->image) Storage::disk('public')->delete($product->image);
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
         $product->update($validated);
 
-    // Kembali ke halaman admin katalog
-    return redirect()->route('products.index')
-                     ->with('success', 'Produk berhasil diperbarui!');
-}
+        return redirect()->route('products.index')
+            ->with('success', 'Produk berhasil diperbarui!');
+    }
 
-
+    /**
+     * Hapus produk (ADMIN ONLY)
+     */
     public function destroy(Product $product)
     {
-        if ($product->image) Storage::disk('public')->delete($product->image);
+        $this->authorize('manage', Product::class);
+
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
 
         $product->delete();
 
@@ -163,14 +184,14 @@ class ProductController extends Controller
      */
     public function addToCart(Product $product)
     {
-        // Sementara dummy dulu supaya nggak error
-        // Nanti bisa disambungkan ke CartController
         return back()->with('success', $product->name . ' ditambahkan ke keranjang!');
     }
 
+    /**
+     * Deprecated
+     */
     public function filter(Request $request)
     {
-        // Deprecated
         return redirect()->route('catalogue');
     }
 }

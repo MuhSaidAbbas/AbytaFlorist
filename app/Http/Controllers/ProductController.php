@@ -44,8 +44,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('manage', Product::class);
-
         return view('products.create');
     }
 
@@ -54,8 +52,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('manage', Product::class);
-
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'price'       => 'required|numeric|min:1000',
@@ -129,8 +125,6 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         return view('products.edit', compact('product'));
     }
 
@@ -139,8 +133,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -168,8 +160,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }

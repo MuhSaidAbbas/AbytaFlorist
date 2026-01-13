@@ -49,6 +49,8 @@
         <a href="{{ route('about') }}" class="hover:text-primary">Tentang</a>
         <a href="{{ route('catalogue') }}" class="hover:text-primary">Katalog</a>
         <a href="{{ route('contact') }}" class="hover:text-primary">Kontak</a>
+        <a href="{{ route('admin.login') }}" class="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition font-semibold">Login</a>
+
 
         {{-- CART ICON (SATU-SATUNYA PEMESANAN) --}}
         @php
@@ -86,6 +88,8 @@
     <a href="{{ route('about') }}" class="block py-2">Tentang</a>
     <a href="{{ route('catalogue') }}" class="block py-2">Katalog</a>
     <a href="{{ route('contact') }}" class="block py-2">Kontak</a>
+    <a href="{{ route('admin.login') }}" class="block py-2 font-semibold text-primary">Login</a>
+
 
     {{-- Cart di mobile --}}
     <a href="{{ route('cart.view') }}" class="block py-2 font-semibold text-primary">

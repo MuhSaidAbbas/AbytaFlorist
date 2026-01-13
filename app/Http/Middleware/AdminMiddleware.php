@@ -9,12 +9,18 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        /**
-         * SEMENTARA (tanpa authentication)
-         * Kita anggap semua user BUKAN admin
-         * Supaya bisa ngetes middleware
-         */
+        
+        // Belum login sama sekali
+        if (!session()->has('user_role')) {
+            return redirect()->route('admin.login');
+        }
 
-        return abort(403, 'Akses ditolak. Halaman khusus admin.');
+        // Sudah login tapi bukan admin
+        if (session('user_role') !== 'admin') {
+            abort(403, 'Anda tidak memiliki akses admin.');
+        }
+
+        // Jika sudah login sebagai admin
+        return $next($request);
     }
 }

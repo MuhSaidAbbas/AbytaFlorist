@@ -21,7 +21,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * ✅ HALAMAN CHECKOUT (INI YANG TADI HILANG)
+     * Tampilkan halaman checkout
      */
     public function show()
     {
@@ -57,11 +57,12 @@ class CheckoutController extends Controller
         });
 
         Order::create([
+            'user_id'          => session('user_id'),
             'customer_name'    => $validated['name'],
             'customer_phone'   => $validated['phone'],
             'customer_address' => $validated['address'],
             'total'            => $total,
-            'status'           => 'pending',
+            'status'           => Order::STATUS_PENDING,
         ]);
 
         // Bersihkan cart
@@ -76,9 +77,30 @@ class CheckoutController extends Controller
     /**
      * Halaman admin melihat semua order
      */
-    public function adminOrders()
+    public function adminOrders(Request $request)
     {
-        $orders = Order::latest()->get();
-        return view('admin.orders.index', compact('orders'));
+        $query = Order::latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->get();
+        $statuses = Order::statuses();
+
+        return view('admin.orders.index', compact('orders', 'statuses'));
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:' . implode(',', array_keys(Order::statuses())),
+        ]);
+
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
 }

@@ -2,8 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-store" />
-    <title>@yield('title', 'Admin Panel - Abyta Florist')</title>
+    <title>@yield('title', 'Dashboard User - Abyta Florist')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,40 +26,28 @@
 
 <body class="bg-gray-50 min-h-screen flex text-gray-800">
 
-{{-- SIDEBAR --}}
+{{-- SIDEBAR USER --}}
 <aside class="w-64 bg-abyta-dark text-white flex flex-col shadow-lg">
 
     {{-- BRAND --}}
-    <div class="px-6 py-5 text-xl font-bold border-b border-white/20 tracking-wide">
+    <div class="px-6 py-5 text-xl font-bold border-b border-white/20">
         Abyta Florist
-        <p class="text-xs font-normal text-white/70">Admin Panel</p>
+        <p class="text-xs font-normal text-white/70">User Dashboard</p>
     </div>
 
     {{-- MENU --}}
     <nav class="flex-1 px-3 py-5 space-y-1 text-sm">
 
-        <a href="{{ route('admin.dashboard') }}"
+        <a href="{{ route('user.dashboard') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
-            📊 Dashboard
+            🏠 Dashboard
         </a>
 
-        <a href="{{ route('products.index') }}"
+        <a href="{{ route('user.orders.index') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
-            ⚙️ Kelola Produk
-        </a>
-
-        <a href="{{ route('products.create') }}"
-           class="flex items-center gap-2 px-4 py-2 rounded-lg
-                  hover:bg-abyta-hover transition">
-            ➕ Tambah Produk
-        </a>
-
-        <a href="{{ route('admin.orders') }}"
-           class="flex items-center gap-2 px-4 py-2 rounded-lg
-                  hover:bg-abyta-hover transition">
-            📦 Daftar Pesanan
+            📦 Pesanan Saya
         </a>
 
         <div class="border-t border-white/20 my-3"></div>
@@ -72,17 +59,18 @@
             🌸 Kembali ke Website
         </a>
 
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+        <form method="POST" action="{{ route('user.logout') }}" class="mt-3">
             @csrf
             <button
                 type="submit"
-                class="w-full flex items-center gap-2
-                    px-4 py-2 rounded-lg
-                    bg-red-600 hover:bg-red-700
-                    text-white font-semibold transition">
+                class="w-full flex items-center justify-start gap-2
+                       px-4 py-2 rounded-lg
+                       bg-red-600 hover:bg-red-700
+                       text-white font-semibold transition">
                 🚪 Logout
             </button>
         </form>
+
     </nav>
 
     {{-- FOOTER --}}
@@ -94,16 +82,9 @@
 {{-- CONTENT --}}
 <main class="flex-1 p-6 overflow-y-auto">
 
-    {{-- FLASH MESSAGE --}}
     @if(session('success'))
         <div class="mb-4 bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg">
             {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mb-4 bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded-lg">
-            {{ session('error') }}
         </div>
     @endif
 

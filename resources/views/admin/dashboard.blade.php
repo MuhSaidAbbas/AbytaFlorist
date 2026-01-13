@@ -12,6 +12,15 @@
         <p class="text-3xl font-bold">{{ \App\Models\Product::count() }}</p>
     </div>
 
+    @php
+    use Illuminate\Support\Facades\Schema;
+    @endphp
+
+    <div class="bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Total Pesanan</p>
+        <p class="text-3xl font-bold">{{ \App\Models\Order::count() }}</p>
+    </div>
+
     <div class="bg-white p-5 rounded-xl shadow">
         <p class="text-sm text-gray-500">Total Pesanan</p>
         <p class="text-3xl font-bold">{{ \App\Models\Order::count() }}</p>

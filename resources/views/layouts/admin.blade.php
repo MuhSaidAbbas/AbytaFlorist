@@ -38,24 +38,27 @@
     {{-- MENU --}}
     <nav class="flex-1 px-3 py-5 space-y-1 text-sm">
 
+        {{-- DASHBOARD --}}
         <a href="{{ route('admin.dashboard') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
             📊 Dashboard
         </a>
 
-        <a href="{{ route('products.index') }}"
+        {{-- PRODUK --}}
+        <a href="{{ route('admin.products.index') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
             ⚙️ Kelola Produk
         </a>
 
-        <a href="{{ route('products.create') }}"
+        <a href="{{ route('admin.products.create') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
             ➕ Tambah Produk
         </a>
 
+        {{-- PESANAN --}}
         <a href="{{ route('admin.orders') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   hover:bg-abyta-hover transition">
@@ -64,12 +67,23 @@
 
         <div class="border-t border-white/20 my-3"></div>
 
+        {{-- BACK TO WEBSITE --}}
         <a href="{{ route('home') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg
                   bg-abyta-soft text-abyta-dark font-semibold
                   hover:bg-white transition">
             🌸 Kembali ke Website
         </a>
+
+        {{-- LOGOUT --}}
+        <form action="{{ route('logout') }}" method="POST" class="mt-3">
+            @csrf
+            <button type="submit"
+                class="w-full text-left flex items-center gap-2 px-4 py-2 rounded-lg
+                       bg-red-600 hover:bg-red-700 transition font-semibold">
+                🚪 Logout
+            </button>
+        </form>
     </nav>
 
     {{-- FOOTER --}}

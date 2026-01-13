@@ -17,17 +17,14 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
-        // Search
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Filter kategori
         if ($request->category) {
             $query->where('category', $request->category);
         }
 
-        // Filter harga
         if ($request->price == 'low') {
             $query->orderBy('price', 'asc');
         } elseif ($request->price == 'high') {
@@ -44,8 +41,6 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('manage', Product::class);
-
         return view('products.create');
     }
 
@@ -54,8 +49,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('manage', Product::class);
-
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'price'       => 'required|numeric|min:1000',
@@ -75,7 +68,7 @@ class ProductController extends Controller
             'image'       => $imageName,
         ]);
 
-        return redirect()->route('products.index')
+        return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil ditambahkan!');
     }
 
@@ -86,17 +79,14 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
-        // Search produk
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Filter kategori
         if ($request->category) {
             $query->whereRaw('LOWER(category) = ?', [strtolower($request->category)]);
         }
 
-        // Filter harga
         if ($request->price == '0-500') {
             $query->whereBetween('price', [0, 500000]);
         } elseif ($request->price == '500-1jt') {
@@ -105,7 +95,6 @@ class ProductController extends Controller
             $query->where('price', '>=', 1000000);
         }
 
-        // Urutkan harga
         if ($request->price == 'low') {
             $query->orderBy('price', 'asc');
         } elseif ($request->price == 'high') {
@@ -129,8 +118,6 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         return view('products.edit', compact('product'));
     }
 
@@ -139,8 +126,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         $validated = $request->validate([
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -152,14 +137,17 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+                Storage::disk('public')->delete('products/' . $product->image);
             }
-            $validated['image'] = $request->file('image')->store('products', 'public');
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('products', $imageName, 'public');
+            $validated['image'] = $imageName;
         }
 
         $product->update($validated);
 
-        return redirect()->route('products.index')
+        return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
@@ -168,23 +156,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $this->authorize('manage', Product::class);
-
         if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+            Storage::disk('public')->delete('products/' . $product->image);
         }
 
         $product->delete();
 
         return back()->with('success', 'Produk dihapus.');
-    }
-
-    /**
-     * Tombol "Tambah ke Keranjang"
-     */
-    public function addToCart(Product $product)
-    {
-        return back()->with('success', $product->name . ' ditambahkan ke keranjang!');
     }
 
     /**

@@ -4,57 +4,118 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\AuthController;
 
-// Homepage
-Route::get('/', fn() => view('home'))->name('home');
+/*
+|--------------------------------------------------------------------------
+| PUBLIC
+|--------------------------------------------------------------------------
+*/
 
-// Halaman statis
-Route::get('/home', fn() => view('home'))->name('home.page');
-Route::get('/about', fn() => view('about'))->name('about');
+Route::get('/', fn () => view('home'))->name('home');
+Route::get('/about', fn () => view('about'))->name('about');
+Route::get('/hubungi-kami', fn () => view('contact'))->name('contact');
 
-// Katalog
-Route::get('/catalogue', [ProductController::class, 'catalogue'])->name('catalogue');
-Route::get('/catalogue/filter', [ProductController::class, 'filter'])->name('catalogue.filter');
-Route::get('/hubungi-kami', fn() => view('contact'))->name('contact');
+/*
+|--------------------------------------------------------------------------
+| KATALOG
+|--------------------------------------------------------------------------
+*/
 
-// CRUD Produk
-Route::resource('products', ProductController::class);
+Route::get('/catalogue', [ProductController::class, 'catalogue'])
+    ->name('catalogue');
 
-// Cart
-Route::post('/cart/add/{product}', [CartController::class,'add'])
+Route::get('/catalogue/filter', [ProductController::class, 'filter'])
+    ->name('catalogue.filter');
+
+/*
+|--------------------------------------------------------------------------
+| CART
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/cart/add/{product}', [CartController::class, 'add'])
     ->name('cart.add');
-Route::get('/cart', [CartController::class,'view'])->name('cart.view');
-Route::delete('/cart/item/{item}', [CartController::class,'remove'])->name('cart.item.remove');
 
-// Update quantity
-Route::patch('/cart/item/{item}', [CartController::class,'update'])
+Route::get('/cart', [CartController::class, 'view'])
+    ->name('cart.view');
+
+Route::delete('/cart/item/{item}', [CartController::class, 'remove'])
+    ->name('cart.item.remove');
+
+Route::patch('/cart/item/{item}', [CartController::class, 'update'])
     ->name('cart.item.update');
 
-// Clear cart
-Route::delete('/cart/clear', [CartController::class,'clear'])
+Route::delete('/cart/clear', [CartController::class, 'clear'])
     ->name('cart.clear');
 
-// Checkout
-Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 
-// Fallback
-Route::fallback(fn() => view('errorpage'));
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
 
-// Admin Panel (jalur rahasia)
-Route::get('/abyta-admin', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/abyta-admin/orders', [CheckoutController::class, 'adminOrders'])
-    ->name('admin.orders');
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
 
-Route::get('/abyta-admin', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::post('/register', [AuthController::class, 'register']);
 
-//middleware
-Route::resource('products', ProductController::class)
-    ->middleware(AdminMiddleware::class);
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| USER (LOGIN REQUIRED)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard', fn () => view('user.dashboard'))
+        ->name('user.dashboard');
+
+    Route::get('/checkout', [CheckoutController::class, 'show'])
+        ->name('checkout.show');
+
+    Route::post('/checkout', [CheckoutController::class, 'process'])
+        ->name('checkout.process');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN (AUTH + ADMIN ROLE)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('abyta-admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/', fn () => view('admin.dashboard'))
+            ->name('dashboard');
+
+        Route::resource('products', ProductController::class);
+
+        Route::get('/orders', [CheckoutController::class, 'adminOrders'])
+            ->name('orders');
+
+        Route::post('/orders/{order}/status',
+            [CheckoutController::class, 'updateStatus']
+        )->name('orders.updateStatus');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| FALLBACK
+|--------------------------------------------------------------------------
+*/
+
+Route::fallback(fn () => view('errorpage'));

@@ -13,8 +13,7 @@ class AdminMiddleware
     {
         // Belum login
         if (!Auth::check()) {
-            return redirect()->route('login')
-                ->with('error', 'Silakan login terlebih dahulu.');
+            abort(403, 'BELUM LOGIN');
         }
 
         // Login tapi bukan admin

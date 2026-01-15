@@ -19,6 +19,11 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showAdminLogin()
+    {
+        return view('admin.login'); // admin login
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -26,21 +31,16 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            // 🔥 INI BAGIAN PENTING
-            if (auth()->user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-
-            return redirect()->route('home');
+        if (!Auth::attempt($credentials)) {
+            return back()->with('login_error', 'Email atau password salah.');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ]);
+        // Login berhasil
+        $request->session()->regenerate();
+
+        return redirect()->route('admin.login.success');
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -85,6 +85,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('admin.logout.success');
+
     }
 }

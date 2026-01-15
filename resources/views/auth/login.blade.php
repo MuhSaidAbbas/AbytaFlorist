@@ -10,12 +10,66 @@
         <input type="email" name="email" placeholder="Email"
             class="w-full mb-3 p-2 border rounded" required>
 
-        <input type="password" name="password" placeholder="Password"
-            class="w-full mb-3 p-2 border rounded" required>
+        <div class="relative mb-3">
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Password"
+                class="w-full p-2 border rounded pr-12 focus:outline-none focus:ring-2 focus:ring-primary"
+                required
+            >
+
+            <button
+                type="button"
+                id="togglePassword"
+                class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800"
+                aria-label="Toggle password visibility"
+            >
+                <!-- eye -->
+                <svg id="icon-eye" xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 12s3.75-7.5 9.75-7.5S21.75 12 21.75 12s-3.75 7.5-9.75 7.5S2.25 12 2.25 12z"/>
+                    <circle cx="12" cy="12" r="3.25"/>
+                </svg>
+
+                <!-- eye-off -->
+                <svg id="icon-eye-off" xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 hidden"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 3l18 18M10.7 10.7A3 3 0 0012 15a3 3 0 002.3-4.3M6.5 6.5C4 8.6 2.25 12 2.25 12s3.75 7.5 9.75 7.5c2 0 3.8-.6 5.3-1.6"/>
+                </svg>
+            </button>
+        </div>
 
         <button class="w-full bg-primary text-white py-2 rounded">
             Login
         </button>
     </form>
 </div>
+
+<script>
+    const toggle = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const eye = document.getElementById('icon-eye');
+    const eyeOff = document.getElementById('icon-eye-off');
+
+    toggle.addEventListener('click', () => {
+        const isHidden = password.type === 'password';
+
+        password.type = isHidden ? 'text' : 'password';
+        eye.classList.toggle('hidden', isHidden);
+        eyeOff.classList.toggle('hidden', !isHidden);
+    });
+</script>
+
 @endsection

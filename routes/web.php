@@ -89,6 +89,26 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| ADMIN AUTH
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/abyta-admin/login', [AuthController::class, 'showAdminLogin'])
+    ->name('admin.login');
+
+Route::post('/abyta-admin/login', [AuthController::class, 'login'])
+    ->name('admin.login.post');
+
+Route::get('/abyta-admin/login-success', function () {
+    return view('admin.login-success');
+})->name('admin.login.success');
+
+Route::get('/abyta-admin/logout-success', function () {
+    return view('admin.logout-success');
+})->name('admin.logout.success');
+
+/*
+|--------------------------------------------------------------------------
 | ADMIN (AUTH + ADMIN ROLE)
 |--------------------------------------------------------------------------
 */

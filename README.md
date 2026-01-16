@@ -4,6 +4,18 @@ Abyta Florist adalah website berbasis **Laravel** yang digunakan untuk **jual be
 
 ---
 
+## Link Youtube
+https://youtu.be/VCfmUwMA-ck
+
+## Link Website 
+https://abytaflorist.store/
+
+## Anggota Kelompok
+- Muh. Said Abbas (2210130003)
+- Muh. Rizki Sya’ban Lahay (2310130026)
+- Muh. Syafir (2310130027)
+- Muh. Yahya (2210130008)
+
 ## Deskripsi Aplikasi
 
 Aplikasi Abyta Florist menyediakan fitur:

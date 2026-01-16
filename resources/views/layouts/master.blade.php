@@ -36,6 +36,8 @@
     </style>
 </head>
 
+
+
 <body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
 
 <header class="flex items-center justify-between border-b border-soft-pink/50 px-4 md:px-10 py-4">
@@ -63,13 +65,18 @@
                 </span>
             @endif
 
-            <form action="{{ route('logout') }}" method="POST" class="inline">
+            <form method="POST"
+                action="{{ route('logout') }}"
+                onsubmit="return confirmLogout();"
+                class="inline">
                 @csrf
-                <button type="submit"
+                <button
+                    type="submit"
                     class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition font-semibold">
                     Logout
                 </button>
             </form>
+
         @endauth
 
         @guest
@@ -122,10 +129,18 @@
     <a href="{{ route('contact') }}" class="block py-2">Kontak</a>
 
     @auth
-        <form action="{{ route('logout') }}" method="POST" class="py-2">
-            @csrf
-            <button class="text-red-600 font-semibold">Logout</button>
-        </form>
+    <form method="POST"
+        action="{{ route('logout') }}"
+        onsubmit="return confirmLogout();"
+        class="inline">
+        @csrf
+        <button
+            type="submit"
+            class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition font-semibold">
+            Logout
+        </button>
+    </form>
+
     @else
         <a href="{{ route('login') }}" class="block py-2 text-primary font-semibold">Login</a>
         <a href="{{ route('register') }}" class="block py-2 text-primary font-semibold">Register</a>
@@ -165,6 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.querySelector('.mobile-nav-mobile');
     if(btn) btn.addEventListener('click', () => nav.classList.toggle('hidden'));
 });
+</script>
+
+<script>
+function confirmLogout() {
+    return confirm('Apakah Anda yakin ingin keluar dari akun?');
+}
 </script>
 
 </body>

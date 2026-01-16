@@ -4,11 +4,10 @@
 <div class="max-w-md mx-auto mt-10">
     <h2 class="text-2xl font-bold mb-4">Login</h2>
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" novalidate>
         @csrf
 
-        <input type="email" name="email" placeholder="Email"
-            class="w-full mb-3 p-2 border rounded" required>
+        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" class="w-full mb-3 p-2 border rounded">
 
         <div class="relative mb-3">
             <input
@@ -17,7 +16,6 @@
                 id="password"
                 placeholder="Password"
                 class="w-full p-2 border rounded pr-12 focus:outline-none focus:ring-2 focus:ring-primary"
-                required
             >
 
             <button
@@ -56,6 +54,39 @@
         </button>
     </form>
 </div>
+
+@if (session('login_error'))
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 text-center">
+
+        <div class="flex justify-center mb-4">
+            <div class="h-14 w-14 flex items-center justify-center rounded-full bg-red-100">
+                <svg class="h-7 w-7 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-2 text-red-600">
+            Login Gagal
+        </h3>
+
+        <p class="text-sm text-gray-600 mb-6">
+            {{ session('login_error') }}
+        </p>
+
+        <button
+            onclick="this.closest('.fixed').remove()"
+            class="w-full rounded-lg bg-gray-200 py-2 text-gray-700 hover:bg-gray-300 transition">
+            Tutup
+        </button>
+
+    </div>
+</div>
+@endif
+
 
 <script>
     const toggle = document.getElementById('togglePassword');

@@ -65,10 +65,13 @@ Route::get('/register', [AuthController::class, 'showRegister'])
 
 Route::post('/register', [AuthController::class, 'register']);
 
+Route::get('/logout/confirm', function () {
+    return view('auth.logout-confirm');
+})->name('logout.confirm');
+
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
-
 /*
 |--------------------------------------------------------------------------
 | USER (LOGIN REQUIRED)

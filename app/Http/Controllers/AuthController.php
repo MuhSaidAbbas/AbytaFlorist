@@ -26,20 +26,36 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (!Auth::attempt($credentials)) {
-            return back()->with('login_error', 'Email atau password salah.');
+        // VALIDASI MANUAL AGAR BISA POPUP
+        if (!$request->filled('email') && !$request->filled('password')) {
+            return back()->withInput()->with('login_error', 'Email dan password wajib diisi.');
         }
 
-        // Login berhasil
+        if (!$request->filled('email')) {
+            return back()->withInput()->with('login_error', 'Email wajib diisi.');
+        }
+
+        if (!$request->filled('password')) {
+            return back()->withInput()->with('login_error', 'Password wajib diisi.');
+        }
+
+        // AUTHENTICATION
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withInput()->with('login_error', 'Email atau password salah.');
+        }
+
+        // LOGIN BERHASIL
         $request->session()->regenerate();
 
-        return redirect()->route('admin.login.success');
+        // ADMIN → popup admin
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.login.success');
+        }
+
+        // USER → langsung ke home / dashboard
+        return redirect()->route('home');
     }
+
 
 
     /*

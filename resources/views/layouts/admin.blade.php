@@ -52,12 +52,6 @@
             ⚙️ Kelola Produk
         </a>
 
-        <a href="{{ route('admin.products.create') }}"
-           class="flex items-center gap-2 px-4 py-2 rounded-lg
-                  hover:bg-abyta-hover transition">
-            ➕ Tambah Produk
-        </a>
-
         {{-- PESANAN --}}
         <a href="{{ route('admin.orders') }}"
            class="flex items-center gap-2 px-4 py-2 rounded-lg

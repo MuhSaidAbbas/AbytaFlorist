@@ -48,8 +48,8 @@
     {{-- Desktop nav --}}
     <nav class="hidden md:flex flex-1 justify-end gap-6">
         <a href="{{ route('home') }}" class="hover:text-primary">Beranda</a>
-        <a href="{{ route('about') }}" class="hover:text-primary">Tentang</a>
         <a href="{{ route('catalogue') }}" class="hover:text-primary">Katalog</a>
+        <a href="{{ route('about') }}" class="hover:text-primary">Tentang</a>
         <a href="{{ route('contact') }}" class="hover:text-primary">Kontak</a>
 
         {{-- AUTH SECTION --}}

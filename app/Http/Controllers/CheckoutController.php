@@ -76,9 +76,50 @@ class CheckoutController extends Controller
     /**
      * Halaman admin melihat semua order
      */
-    public function adminOrders()
+    public function adminOrders(Request $request)
     {
-        $orders = Order::latest()->get();
+        $query = \App\Models\Order::query();
+
+        // SEARCH (nama, telepon, alamat, status)
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('customer_name', 'like', "%{$search}%")
+                ->orWhere('customer_phone', 'like', "%{$search}%")
+                ->orWhere('customer_address', 'like', "%{$search}%")
+                ->orWhere('status', 'like', "%{$search}%");
+            });
+        }
+
+        // FILTER STATUS (dari tombol TERAPKAN)
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // FILTER TANGGAL (dari tombol TERAPKAN)
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $orders = $query->latest()->get();
+
         return view('admin.orders.index', compact('orders'));
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:tertunda,diproses,dikirim,selesai,dibatalkan',
+        ]);
+
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()
+            ->back()
+            ->withFragment($request->anchor)
+            ->with('success', 'Status pesanan berhasil diperbarui.');
     }
 }

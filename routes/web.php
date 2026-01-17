@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', fn () => view('user.dashboard'))
+    Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('user.dashboard');
 
     Route::get('/checkout', [CheckoutController::class, 'show'])

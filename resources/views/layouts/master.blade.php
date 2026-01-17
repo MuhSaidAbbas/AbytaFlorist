@@ -60,22 +60,11 @@
                     Admin Dashboard
                 </a>
             @else
-                <span class="font-semibold text-primary">
-                    Halo, {{ auth()->user()->name }}
-                </span>
+                <a href="{{ route('user.dashboard') }}"
+                class="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition font-semibold">
+                    Dashboard Saya
+                </a>
             @endif
-
-            <form method="POST"
-                action="{{ route('logout') }}"
-                onsubmit="return confirmLogout();"
-                class="inline">
-                @csrf
-                <button
-                    type="submit"
-                    class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition font-semibold">
-                    Logout
-                </button>
-            </form>
 
         @endauth
 
@@ -129,18 +118,15 @@
     <a href="{{ route('contact') }}" class="block py-2">Kontak</a>
 
     @auth
-    <form method="POST"
-        action="{{ route('logout') }}"
-        onsubmit="return confirmLogout();"
-        class="inline">
-        @csrf
-        <button
-            type="submit"
-            class="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition font-semibold">
-            Logout
-        </button>
-    </form>
-
+        @if(auth()->user()->role === 'admin')
+            <a href="{{ route('admin.dashboard') }}" class="block py-2 font-semibold text-primary">
+                Admin Dashboard
+            </a>
+        @else
+            <a href="{{ route('user.dashboard') }}" class="block py-2 font-semibold text-primary">
+                Dashboard Saya
+            </a>
+        @endif
     @else
         <a href="{{ route('login') }}" class="block py-2 text-primary font-semibold">Login</a>
         <a href="{{ route('register') }}" class="block py-2 text-primary font-semibold">Register</a>

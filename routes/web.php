@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/checkout', [CheckoutController::class, 'process'])
         ->name('checkout.process');
+
+    Route::get('/pesanan-saya', [UserOrderController::class, 'index'])
+        ->name('user.orders.index');
 });
 
 /*
